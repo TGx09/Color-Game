@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Color Game</title>
+    <link rel="stylesheet" href="game.css">
+</head>
+<body>
+<div class="container">
+    <h1>Random Color Game</h1>
+    <h2>Choose This Color:</h2>
+    <div class="target-box" id="targetBox"></div>
+    <div class="buttons" id="buttons"></div>
+    <p id="result"></p>
+    <p id="score">Score: 0</p>
+    <button class="next-btn" onclick="newRound()">
+        Next Round
+    </button>
+    <button class="reset-btn" onclick="location.reload()">
+        Reset
+    </button>
+</div>
+<script>
+const colors = [ "red","blue","green","yellow","purple","orange","pink","cyan","black","brown","white" ];
+let targetColor = "";
+let score = 0;
+function newRound() {
+    const buttonsDiv = document.getElementById("buttons");
+    const targetBox = document.getElementById("targetBox");
+    const result = document.getElementById("result");
+    result.innerHTML = "";
+    buttonsDiv.innerHTML = "";
+    let choices = [];
+    while (choices.length < 4) {
+        const randomColor = colors[Math.floor(Math.random() * colors.length)];
+        if (!choices.includes(randomColor)) {
+            choices.push(randomColor);
+        }
+    }
+    targetColor = choices[Math.floor(Math.random() * choices.length)];
+    targetBox.style.backgroundColor = targetColor;
+    choices.forEach(color => {
+        const button = document.createElement("button");
+        button.className = "color-btn";
+        button.style.backgroundColor = color;
+        button.onclick = function () {
+            checkAnswer(color);
+        };
+        buttonsDiv.appendChild(button);
+    });
+}
+function checkAnswer(selectedColor) {
+    const result = document.getElementById("result");
+    const scoreText = document.getElementById("score");
+    const buttons = document.querySelectorAll(".color-btn");
+    buttons.forEach(button => {
+        button.disabled = true;
+        button.style.opacity = "0.6";
+    });
+    if (selectedColor === targetColor) {
+        result.innerHTML = "Correct!";
+        result.style.color = "lime";
+        score++;
+    }
+    else {
+        result.innerHTML = "Wrong!";
+        result.style.color = "red";
+        score--;
+    }
+    if (score < 0) {
+    score = 0;
+    }
+    scoreText.innerHTML = "Score: " + score;
+}
+newRound();
+</script>
+</body>
+</html>
