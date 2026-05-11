@@ -7,4 +7,3 @@ Made for Macondo.
 
 * HTML
 * CSS
-* JavaScript
